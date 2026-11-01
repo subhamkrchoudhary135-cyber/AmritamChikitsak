@@ -19,14 +19,16 @@ env.bak/
 venv.bak/
 
 # 3. Build & Packaging Artifacts
-build/
+/build/
 develop-eggs/
-dist/
+/dist/
 downloads/
 eggs/
 .eggs/
-lib/
-lib64/
+/lib/
+/lib64/
+!frontend/src/lib/
+!frontend/src/lib/**
 parts/
 sdist/
 var/
