@@ -1,0 +1,57 @@
+# ==============================================================================
+# SANJIVANI AI - Docker Build Context Ignore Specification (.dockerignore)
+# Prevents bloated build contexts and sensitive files from entering container images
+# ==============================================================================
+
+# Version Control & CI
+.git
+.github
+
+# Virtual Environments
+.venv
+venv
+env
+
+# Python Caches & Bytecode
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+
+# Testing, Coverage & Caches
+.pytest_cache
+.ruff_cache
+.mypy_cache
+.coverage
+.coverage.*
+htmlcov
+coverage.xml
+
+# MLOps & Vector Databases
+mlruns
+mlartifacts
+data/chroma_db
+
+# Local Databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Environment Variables & Secrets
+.env
+.env.*
+!.env.example
+
+# Temporary & Log Files
+*.log
+tempCodeRunnerFile.*
+
+# Frontend Node Modules & Next.js Build Outputs
+node_modules
+*/node_modules
+.next
+*/.next
+out
+*/out
+.vercel
+*/.vercel

@@ -1,0 +1,83 @@
+name: Sanjivani AI Continuous Integration
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+
+jobs:
+  lint-and-test:
+    name: Code Quality & Automated Tests
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: sanjivani_user
+          POSTGRES_PASSWORD: sanjivani_secure_password_2026
+          POSTGRES_DB: sanjivani_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Code Formatting Check (Black)
+        run: |
+          black --check src tests
+
+      - name: Linting (Ruff)
+        run: |
+          ruff check src tests
+
+      - name: Run Data Pipeline DAG
+        run: |
+          python -m src.data.pipeline --stage all
+
+      - name: Train Models Cache
+        run: |
+          python scripts/train_all_models.py
+
+      - name: Run Pytest Suite with Coverage
+        env:
+          DATABASE_URL: "sqlite+aiosqlite:///./test_ci.db"
+          DPDP_ENCRYPTION_KEY: "tU_h7nL3w-u7-sR58vB0VfM6iWwJ9qK4h1b8yV6d0nQ="
+          SECRET_KEY: "ci-secret-key-for-automated-tests-only"
+          LLM_PROVIDER: "offline"
+        run: |
+          pytest --cov=src --cov-report=xml --cov-report=term-missing tests/
+
+      - name: Upload Test Coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage.xml

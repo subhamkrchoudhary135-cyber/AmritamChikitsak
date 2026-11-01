@@ -1,0 +1,117 @@
+version: '3.8'
+
+services:
+  # 1. PostgreSQL Relational Database (Stores Users, Encrypted Patients, Consents, Screenings)
+  postgres:
+    image: postgres:16-alpine
+    container_name: sanjivani_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-sanjivani_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-sanjivani_secure_password_2026}
+      POSTGRES_DB: ${POSTGRES_DB:-sanjivani_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-sanjivani_user} -d ${POSTGRES_DB:-sanjivani_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 2. Redis In-Memory Cache & Celery Broker
+  redis:
+    image: redis:7-alpine
+    container_name: sanjivani_redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 3. Sanjivani AI FastAPI Backend API
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sanjivani_api
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-sanjivani_user}:${POSTGRES_PASSWORD:-sanjivani_secure_password_2026}@postgres:5432/${POSTGRES_DB:-sanjivani_db}
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL:-redis://redis:6379/0}
+      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND:-redis://redis:6379/0}
+      DPDP_ENCRYPTION_KEY: ${DPDP_ENCRYPTION_KEY:-tU_h7nL3w-u7-sR58vB0VfM6iWwJ9qK4h1b8yV6d0nQ=}
+      SECRET_KEY: ${SECRET_KEY:-sanjivani-ai-super-secret-key-change-in-production-2026-secure}
+      LLM_PROVIDER: ${LLM_PROVIDER:-offline}
+      ENVIRONMENT: ${ENVIRONMENT:-production}
+      DEBUG: ${DEBUG:-false}
+    ports:
+      - "8000:8000"
+    volumes:
+      - models_cache:/app/models_cache
+      - reports_data:/app/reports/generated
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # 4. Celery Asynchronous Background Worker
+  celery_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sanjivani_celery_worker
+    restart: always
+    command: ["celery", "-A", "src.tasks.celery_app", "worker", "--loglevel=info", "--concurrency=2"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-sanjivani_user}:${POSTGRES_PASSWORD:-sanjivani_secure_password_2026}@postgres:5432/${POSTGRES_DB:-sanjivani_db}
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL:-redis://redis:6379/0}
+      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND:-redis://redis:6379/0}
+      DPDP_ENCRYPTION_KEY: ${DPDP_ENCRYPTION_KEY:-tU_h7nL3w-u7-sR58vB0VfM6iWwJ9qK4h1b8yV6d0nQ=}
+    volumes:
+      - models_cache:/app/models_cache
+      - reports_data:/app/reports/generated
+
+  # 5. MLflow Tracking & Artifact Registry
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v2.11.1
+    container_name: sanjivani_mlflow
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      - MLFLOW_TRACKING_URI=sqlite:///mlflow.db
+    command: >
+      mlflow server
+      --backend-store-uri sqlite:///mlflow.db
+      --default-artifact-root /mlartifacts
+      --host 0.0.0.0
+      --port 5000
+    volumes:
+      - mlflow_data:/mlartifacts
+
+volumes:
+  postgres_data:
+  redis_data:
+  models_cache:
+  reports_data:
+  mlflow_data:

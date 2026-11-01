@@ -1,0 +1,83 @@
+# DVC Data Pipeline Versioning Specification for Sanjivani AI
+# Reproducible DAG tracking raw inputs, interim parquets, features, and reports
+
+stages:
+  ingest:
+    cmd: python -m src.data.pipeline --stage ingest
+    deps:
+      - configs/data_catalog.yaml
+      - src/data/ingest.py
+    outs:
+      - data/raw:
+          persist: true
+
+  clean:
+    cmd: python -m src.data.pipeline --stage clean
+    deps:
+      - src/data/clean.py
+      - data/raw
+    outs:
+      - data/interim/harmonized_clinical_data.parquet
+
+  validate:
+    cmd: python -m src.data.pipeline --stage validate
+    deps:
+      - src/data/validate.py
+      - data/interim/harmonized_clinical_data.parquet
+    outs:
+      - reports/missingness_report.csv
+
+  features:
+    cmd: python -m src.data.pipeline --stage features
+    deps:
+      - src/data/features.py
+      - data/interim/harmonized_clinical_data.parquet
+    outs:
+      - data/processed/featured_clinical_data.parquet
+      - configs/features.yaml
+
+  split:
+    cmd: python -m src.data.pipeline --stage split
+    deps:
+      - src/data/split.py
+      - data/interim/harmonized_clinical_data.parquet
+    outs:
+      - data/processed/diabetes_train.parquet
+      - data/processed/diabetes_val.parquet
+      - data/processed/diabetes_test.parquet
+      - data/processed/heart_disease_train.parquet
+      - data/processed/heart_disease_val.parquet
+      - data/processed/heart_disease_test.parquet
+      - data/processed/hypertension_train.parquet
+      - data/processed/hypertension_val.parquet
+      - data/processed/hypertension_test.parquet
+      - data/processed/regression_train.parquet
+
+  fairness:
+    cmd: python -m src.data.pipeline --stage fairness
+    deps:
+      - src/data/imbalance_fairness.py
+      - data/processed/featured_clinical_data.parquet
+    outs:
+      - reports/fairness_subgroup_audit.csv
+
+  reports:
+    cmd: python -m src.data.pipeline --stage reports
+    deps:
+      - src/data/reports.py
+      - data/processed/featured_clinical_data.parquet
+    outs:
+      - reports/data_quality_report.html
+      - reports/correlation_heatmap.png
+      - reports/class_distributions.png
+      - reports/missingness_map.png
+      - reports/cluster_pca_scatter.png
+
+  drift:
+    cmd: python -m src.data.pipeline --stage drift
+    deps:
+      - src/data/drift_monitor.py
+      - data/processed/diabetes_train.parquet
+      - data/processed/diabetes_test.parquet
+    outs:
+      - reports/evidently_drift_report.html

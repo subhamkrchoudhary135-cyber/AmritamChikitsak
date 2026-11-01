@@ -1,0 +1,16 @@
+dimension,subgroup,sample_count,population_share_pct,diabetes_prevalence_pct,warning
+sex,female,11494,52.44,23.74,Adequate
+sex,male,10026,45.74,23.73,Adequate
+sex,other,400,1.82,40.75,Adequate
+age_band,30_to_44,5358,24.44,14.6,Adequate
+age_band,45_to_59,5767,26.31,26.14,Adequate
+age_band,60_plus,7724,35.24,31.66,Adequate
+age_band,under_30,3071,14.01,17.6,Adequate
+source,app_screenings_consented,150,0.68,,Adequate
+source,cdc_brfss_subset,10000,45.62,30.39,Adequate
+source,framingham_heart,4240,19.34,3.37,Adequate
+source,kaggle_ckd,400,1.82,40.75,Adequate
+source,nhanes_subset,5000,22.81,24.08,Adequate
+source,pima_diabetes,768,3.5,34.9,Adequate
+source,sklearn_diabetes,442,2.02,45.25,Adequate
+source,uci_heart_disease,920,4.2,,Adequate

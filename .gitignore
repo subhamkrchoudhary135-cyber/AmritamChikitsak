@@ -1,0 +1,114 @@
+# ==============================================================================
+# SANJIVANI AI - Unified & Consolidated .gitignore
+# Clean, non-redundant Git exclusion specification for Python, ML, Next.js & OS
+# ==============================================================================
+
+# 1. Python & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# 2. Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# 3. Build & Packaging Artifacts
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# 4. Testing, Code Coverage & Lint Caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+nosetests.xml
+coverage.xml
+
+# 5. Local Databases & SQLite Files
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+*.db-wal
+*.db-shm
+
+# 6. Environment Variables & Secrets
+# Keep configuration templates tracked while ignoring real local secrets
+.env
+.env.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+!.env.example
+*.pem
+*.key
+
+# 7. Temporary, Code Runner & Scratch Files
+tempCodeRunnerFile.*
+*.log
+
+# 8. MLflow, Local Model Artifacts & Vector Store
+mlruns/
+mlartifacts/
+models_cache/*.joblib
+models_cache/*.onnx
+models_cache/*.pkl
+data/chroma_db/
+reports/generated/
+
+# 9. Frontend (Next.js, Node.js & Webpack)
+node_modules/
+*/node_modules/
+.next/
+*/.next/
+out/
+*/out/
+.vercel/
+*/.vercel/
+*.tsbuildinfo
+*/.tsbuildinfo
+next-env.d.ts.bak
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# 10. IDE, Editor & Operating System Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
