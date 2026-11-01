@@ -3,12 +3,44 @@
 > **Production-Grade Explainable & Multilingual AI Health Risk Screening Platform for India**  
 > *Inspired by Ada Health, Tricog, Sugar.fit, and HealthifyMe — strictly designed for clinical screening support and early cardiometabolic risk stratification, NEVER definitive medical diagnosis.*
 
-[![CI Pipeline](https://github.com/subhamkrchoudhary135-cyber/AmritamChikitsak/actions/workflows/ci.yml/badge.svg)](https://github.com/subhamkrchoudhary135-cyber/AmritamChikitsak/actions)
-[![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/release/python-3110/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688.svg?logo=fastapi)](https://fastapi.tiangolo.com)
-[![Code Coverage](https://img.shields.io/badge/coverage-80%25-brightgreen.svg)](tests/)
-[![DPDP Act Compliant](https://img.shields.io/badge/DPDP%20Act%202023-Compliant-teal.svg)](#security--privacy-dpdp-act-2023)
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+[![Vercel Deployment](https://img.shields.io/badge/Vercel-Live%20Platform-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://amritam-chikitsak-84nv.vercel.app)
+[![Live Demo](https://img.shields.io/badge/Live_Website-amritam--chikitsak--84nv.vercel.app-0f766e?style=for-the-badge&logo=google-chrome&logoColor=white)](https://amritam-chikitsak-84nv.vercel.app)
+[![Next.js 14](https://img.shields.io/badge/Next.js-14.2.15-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![Python 3.11](https://img.shields.io/badge/python-3.11-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/downloads/release/python-3110/)
+[![DPDP Act Compliant](https://img.shields.io/badge/DPDP%20Act%202023-Compliant-teal.svg?style=for-the-badge)](#5-security--privacy-dpdp-act-2023)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=for-the-badge)](LICENSE)
+
+> 🌐 **Live Website URL:** **[https://amritam-chikitsak-84nv.vercel.app](https://amritam-chikitsak-84nv.vercel.app)**  
+> 🏥 **GitHub Repository:** **[https://github.com/subhamkrchoudhary135-cyber/AmritamChikitsak](https://github.com/subhamkrchoudhary135-cyber/AmritamChikitsak)**  
+> 📜 **Clinical Protocol Compliance:** Grounded in ICMR 2023, WHO SEAR, and ADA 2024 cardiometabolic guidelines.
+
+---
+
+## 📸 Web Platform & User Interface Showcase
+
+| 1. Landing & DPDP Consent Gateway | 2. 4-Step Smart Screening Form |
+| :---: | :---: |
+| ![Onboarding](docs/screenshots/01_onboarding_landing.png) | ![Screening](docs/screenshots/02_screening_form.png) |
+| **3. Cardiometabolic Risk Gauges** | **4. SHAP Feature Attribution (XAI)** |
+| ![Risk Gauges](docs/screenshots/03_results_risk_gauge.png) | ![SHAP XAI](docs/screenshots/04_shap_waterfall.png) |
+| **5. 3-6 Month Trajectory Forecast** | **6. Clinician Triage Portal** |
+| ![Forecast](docs/screenshots/05_trajectory_forecast.png) | ![Doctor Portal](docs/screenshots/06_doctor_portal.png) |
+
+### 🚀 Production Deployment on Vercel
+![Vercel Production Deployment](docs/screenshots/vercel_deployment_success.png)
+
+### 🗺️ Live Application Sitemap & Deployed Routes
+
+| Route | Page | Key Features |
+| :--- | :--- | :--- |
+| **[`/`](https://amritam-chikitsak-84nv.vercel.app)** | **Home / Landing** | DPDP Act 2023 consent card, ICMR & WHO guidelines badge, quick action cards, non-diagnostic disclaimer. |
+| **[`/screen`](https://amritam-chikitsak-84nv.vercel.app/screen)** | **4-Step Risk Screening** | Demographics & Asian-Indian BMI calculation, Blood pressure & vitals, Lab markers with OCR modal, Red-flag check & voice input. |
+| **[`/results`](https://amritam-chikitsak-84nv.vercel.app/results)** | **Clinical Assessment Dashboard** | Multi-condition Risk Gauges (Diabetes, Heart Disease, Hypertension), SHAP factor breakdown, 3–6 month trajectory forecast, Cohort clustering, and PDF download. |
+| **[`/history`](https://amritam-chikitsak-84nv.vercel.app/history)** | **Longitudinal EHR Timeline** | Multi-month biomarker trends (Glucose, BP, Risk score) with interactive Recharts graph and past screening history cards. |
+| **[`/chat`](https://amritam-chikitsak-84nv.vercel.app/chat)** | **AI Doctor Assistant** | Grounded in ICMR 2023, WHO PEN, and ADA protocols; citation pills, voice input button, and emergency triage triggers. |
+| **[`/doctor`](https://amritam-chikitsak-84nv.vercel.app/doctor)** | **Clinician EHR Portal** | Triaged patient records table, ABHA ID search, risk stratification overview cards, and clinical review actions. |
+| **[`/settings`](https://amritam-chikitsak-84nv.vercel.app/settings)** | **Privacy & DPDP Controls** | Multilingual switcher (`en`, `hi`, `pa`), DPDP Act 2023 consent toggles, JSON data export, and Right to Erasure (Sec. 12). |
 
 ---
 
