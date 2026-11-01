@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useI18n } from "@/lib/i18n/context";
@@ -221,7 +221,7 @@ const DEMO_ASSESSMENT: ScreeningResponse = {
     "DISCLAIMER: Sanjivani AI is an AI-powered screening support tool and NOT a diagnostic medical device. Consult a qualified medical practitioner.",
 };
 
-export default function ResultsPage() {
+function ResultsContent() {
   const searchParams = useSearchParams();
   const { t, locale } = useI18n();
   const [data, setData] = useState<ScreeningResponse>(DEMO_ASSESSMENT);
@@ -445,5 +445,20 @@ export default function ResultsPage() {
       {/* Teleconsultation Modal */}
       <DoctorCTAModal isOpen={isDoctorModalOpen} onClose={() => setIsDoctorModalOpen(false)} />
     </div>
+  );
+}
+
+export default function ResultsPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="py-24 text-center space-y-3">
+          <div className="h-8 w-8 border-3 border-medical-teal border-t-transparent rounded-full animate-spin mx-auto" />
+          <p className="text-sm text-slate-500">Loading screening assessment...</p>
+        </div>
+      }
+    >
+      <ResultsContent />
+    </Suspense>
   );
 }
